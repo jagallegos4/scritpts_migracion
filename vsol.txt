@@ -1,0 +1,2018 @@
+!
+!  configuration saved from vty
+!   ! Current configuration !
+!   2024/06/06 09:20:08
+!
+!Software Version      : V2.3.1R
+!Software Created Time : 25/01/2024
+!
+hostname OLT1-LINEASS
+password Xpon@Olt9417#
+enable password Xpon@Olt9417#
+log trap emergencies
+auto-copy running-config startup-config enable timeout 86400
+!
+line vty
+exit
+!
+security-dos
+flexible ctrl 0 ctrl2 0
+Dos Prevent level off 
+exit
+!
+interface aux
+ip address 172.20.0.200 255.255.255.0
+ipv6 address fec0::1eef:3ff:fe63:a865/64
+exit
+!
+vlan 1
+exit
+vlan 100
+exit
+vlan 100
+description Vlan-Clientes
+exit
+!
+interface aux
+ip gateway 172.20.0.1
+exit
+!
+!
+!
+!
+interface gigabitethernet 0/1
+switchport mode hybrid
+switchport hybrid pvid vlan 1
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no switchport isolate
+no ip igmp snooping immediate-leave
+exit
+!
+interface gigabitethernet 0/2
+switchport mode hybrid
+switchport hybrid pvid vlan 1
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no switchport isolate
+no ip igmp snooping immediate-leave
+exit
+!
+interface gigabitethernet 0/3
+switchport mode hybrid
+switchport hybrid vlan 100 tagged
+switchport hybrid pvid vlan 1
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no switchport isolate
+no ip igmp snooping immediate-leave
+exit
+!
+interface gigabitethernet 0/4
+switchport mode hybrid
+switchport hybrid pvid vlan 1
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no switchport isolate
+no ip igmp snooping immediate-leave
+exit
+!
+interface gigabitethernet 0/5
+switchport mode hybrid
+switchport hybrid pvid vlan 1
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no switchport isolate
+no ip igmp snooping immediate-leave
+exit
+!
+interface gigabitethernet 0/6
+switchport mode hybrid
+switchport hybrid pvid vlan 1
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no switchport isolate
+no ip igmp snooping immediate-leave
+exit
+!
+interface gpon 0/1
+description PROYECTO1
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no ip igmp snooping immediate-leave
+mac address-table mac-flapping disable
+exit
+!
+interface gpon 0/2
+description Proyecto2
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no ip igmp snooping immediate-leave
+mac address-table mac-flapping disable
+exit
+!
+interface gpon 0/3
+description Compania_Alto
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no ip igmp snooping immediate-leave
+mac address-table mac-flapping disable
+exit
+!
+interface gpon 0/4
+description Quichuqui
+no shutdown 
+mdi force
+storm-control broadcast fps 512
+no storm-control multicast
+storm-control unknow fps 512
+no ip igmp snooping immediate-leave
+mac address-table mac-flapping disable
+exit
+!
+!
+port link-flapping mode auto-recovery
+!
+!
+profile dba id 1 name INTERNET
+type 4 maximum 1024000
+exit
+!
+profile dba id 511 name default1
+type 3 assured 1024 maximum 1024000
+exit
+!
+profile onu id 1 name Hw_4p
+description Hw_4p
+tcont-num 1 gemport-num 3
+port-num eth 4 iphost 1 ipv6host 1 
+service-ability N:1 yes 1:P yes 1:M yes
+commit
+exit
+!
+profile onu id 2 name ONU_1P
+description ONU_1P
+tcont-num 1 gemport-num 3
+port-num eth 1 iphost 1 veip 1 
+service-ability N:1 yes 1:P yes 1:M yes
+commit
+exit
+!
+plug_and_play vlan 1
+!
+interface gpon1
+no onu auto-learn
+onu add 1 profile ONU_1P sn VSOL00B63421
+onu 1 desc 10001_1001
+onu 1 tcont 1 name INTERNET dba INTERNET
+onu 1 gemport 1 tcont 1 gemport_name INTERNET
+onu 1 gemport 1 traffic-limit upstream default downstream default
+onu 1 service INTERNET gemport 1 vlan 100
+onu 1 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 1 service-port 1 description INTERNET
+onu 1 portvlan veip 1 mode transparent
+onu 1 pri equid VSOLD401
+onu add 2 profile ONU_1P sn VSOL00B63665
+onu 2 desc 10002_1002
+onu 2 tcont 1 name INTERNET dba INTERNET
+onu 2 gemport 1 tcont 1 gemport_name INTERNET
+onu 2 gemport 1 traffic-limit upstream default downstream default
+onu 2 service INTERNET gemport 1 vlan 100
+onu 2 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 2 service-port 1 description INTERNET
+onu 2 portvlan veip 1 mode transparent
+onu 2 pri equid VSOLD401
+onu 2 pri wan_conn add route 
+onu 2 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10002 pwd 1002 mode auto server PPPOE_SERVER1
+onu 2 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu add 3 profile ONU_1P sn VSOL00B63469
+onu 3 desc 10004_1004
+onu 3 tcont 1 name INTERNET dba INTERNET
+onu 3 gemport 1 tcont 1 gemport_name INTERNET
+onu 3 gemport 1 traffic-limit upstream default downstream default
+onu 3 service INTERNET gemport 1 vlan 100
+onu 3 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 3 service-port 1 description INTERNET
+onu 3 portvlan veip 1 mode transparent
+onu 3 pri equid VSOLD401
+onu 3 pri wan_conn add route 
+onu 3 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10004 pwd 1004 mode auto server PPPOE_SERVER1
+onu 3 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 3 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 4 profile ONU_1P sn HWTCE6076993
+onu 4 tcont 1 name INTERNET dba INTERNET
+onu 4 gemport 1 tcont 1 gemport_name INTERNET
+onu 4 gemport 1 traffic-limit upstream default downstream default
+onu 4 service INTERNET gemport 1 vlan 100
+onu 4 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 4 service-port 1 description INTERNET
+onu 4 portvlan veip 1 mode transparent
+onu add 5 profile ONU_1P sn HWTC355AC07C
+onu 5 desc 10034_1034
+onu 5 tcont 1 name INTERNET dba INTERNET
+onu 5 gemport 1 tcont 1 gemport_name INTERNET
+onu 5 gemport 1 traffic-limit upstream default downstream default
+onu 5 service INTERNET gemport 1 vlan 100
+onu 5 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 5 service-port 1 description INTERNET
+onu 5 portvlan veip 1 mode transparent
+onu add 6 profile ONU_1P sn VSOL00B634CD
+onu 6 desc 10038_1035
+onu 6 tcont 1 name INTERNET dba INTERNET
+onu 6 gemport 1 tcont 1 gemport_name INTERNET
+onu 6 gemport 1 traffic-limit upstream default downstream default
+onu 6 service INTERNET gemport 1 vlan 100
+onu 6 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 6 service-port 1 description INTERNET
+onu 6 portvlan veip 1 mode transparent
+onu 6 pri equid VSOLD401
+onu 6 pri wan_conn add route 
+onu 6 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10035 pwd 1035 mode auto server PPPOE_SERVER1
+onu 6 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 6 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 7 profile Hw_4p sn HWTCA0C99B96
+onu 7 desc 10038_1038
+onu 7 tcont 1 name INTERNET dba INTERNET
+onu 7 gemport 1 tcont 1 gemport_name INTERNET
+onu 7 gemport 1 traffic-limit upstream default downstream default
+onu 7 service INTERNET gemport 1 vlan 100
+onu 7 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 7 service-port 1 description INTERNET
+onu 7 portvlan veip 1 mode transparent
+onu add 8 profile ONU_1P sn VSOL00B635E1
+onu 8 desc 10039_1039
+onu 8 tcont 1 name INTERNET dba INTERNET
+onu 8 gemport 1 tcont 1 gemport_name INTERNET
+onu 8 gemport 1 traffic-limit upstream default downstream default
+onu 8 service INTERNET gemport 1 vlan 100
+onu 8 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 8 service-port 1 description INTERNET
+onu 8 portvlan veip 1 mode transparent
+onu 8 pri equid VSOLD401
+onu 8 pri wan_conn add route 
+onu 8 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10039 pwd 1039 mode auto server PPPOE_SERVER1
+onu 8 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 8 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 9 profile ONU_1P sn VSOL00B636C5
+onu 9 desc 10040_1040
+onu 9 tcont 1 name INTERNET dba INTERNET
+onu 9 gemport 1 tcont 1 gemport_name INTERNET
+onu 9 gemport 1 traffic-limit upstream default downstream default
+onu 9 service INTERNET gemport 1 vlan 100
+onu 9 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 9 service-port 1 description INTERNET
+onu 9 portvlan veip 1 mode transparent
+onu 9 pri equid VSOLD401
+onu 9 pri wan_conn add route 
+onu 9 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10040 pwd 1040 mode auto server PPPOE_SERVER1
+onu 9 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 9 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 10 profile ONU_1P sn VSOL00B63509
+onu 10 desc 10041_1041
+onu 10 tcont 1 name INTERNET dba INTERNET
+onu 10 gemport 1 tcont 1 gemport_name INTERNET
+onu 10 gemport 1 traffic-limit upstream default downstream default
+onu 10 service INTERNET gemport 1 vlan 100
+onu 10 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 10 service-port 1 description INTERNET
+onu 10 portvlan veip 1 mode transparent
+onu 10 pri equid VSOLD401
+onu 10 pri wan_conn add route 
+onu 10 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10041 pwd 1041 mode auto server PPPOE_SERVER1
+onu 10 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 10 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 11 profile ONU_1P sn VSOL00B63501
+onu 11 desc 10042_1042
+onu 11 tcont 1 name INTERNET dba INTERNET
+onu 11 gemport 1 tcont 1 gemport_name INTERNET
+onu 11 gemport 1 traffic-limit upstream default downstream default
+onu 11 service INTERNET gemport 1 vlan 100
+onu 11 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 11 service-port 1 description INTERNET
+onu 11 portvlan veip 1 mode transparent
+onu 11 pri equid VSOLD401
+onu 11 pri wan_conn add route 
+onu 11 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10042 pwd 1042 mode auto server PPPOE_SERVER1
+onu 11 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 11 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 12 profile ONU_1P sn VSOL00B6341D
+onu 12 desc 10043_1043
+onu 12 tcont 1 name INTERNET dba INTERNET
+onu 12 gemport 1 tcont 1 gemport_name INTERNET
+onu 12 gemport 1 traffic-limit upstream default downstream default
+onu 12 service INTERNET gemport 1 vlan 100
+onu 12 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 12 service-port 1 description INTERNET
+onu 12 portvlan veip 1 mode transparent
+onu 12 pri equid VSOLD401
+onu 12 pri wan_conn add route 
+onu 12 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10043 pwd 1043 mode auto server PPPOE_SERVER1
+onu 12 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 12 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 13 profile ONU_1P sn VSOL00B635FD
+onu 13 desc 10044_1044
+onu 13 tcont 1 name INTERNET dba INTERNET
+onu 13 gemport 1 tcont 1 gemport_name INTERNET
+onu 13 gemport 1 traffic-limit upstream default downstream default
+onu 13 service INTERNET gemport 1 vlan 100
+onu 13 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 13 service-port 1 description INTERNET
+onu 13 portvlan veip 1 mode transparent
+onu 13 pri equid VSOLD401
+onu 13 pri wan_conn add route 
+onu 13 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10044 pwd 1044 mode auto server PPPOE_SERVER1
+onu 13 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 13 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 14 profile Hw_4p sn HWTC163B9396
+onu 14 desc 10045_1045
+onu 14 tcont 1 name INTERNET dba INTERNET
+onu 14 gemport 1 tcont 1 gemport_name INTERNET
+onu 14 gemport 1 traffic-limit upstream default downstream default
+onu 14 service INTERNET gemport 1 vlan 100
+onu 14 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 14 service-port 1 description INTERNET
+onu 14 portvlan veip 1 mode transparent
+onu add 15 profile ONU_1P sn VSOL00B63595
+onu 15 desc 10046_1046
+onu 15 tcont 1 name INTERNET dba INTERNET
+onu 15 gemport 1 tcont 1 gemport_name INTERNET
+onu 15 gemport 1 traffic-limit upstream default downstream default
+onu 15 service INTERNET gemport 1 vlan 100
+onu 15 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 15 service-port 1 description INTERNET
+onu 15 portvlan veip 1 mode transparent
+onu 15 pri equid VSOLD401
+onu 15 pri wan_conn add route 
+onu 15 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10046 pwd 1046 mode auto server PPPOE_SERVER1
+onu 15 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 15 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 16 profile ONU_1P sn VSOL00B636D1
+onu 16 desc 10003
+onu 16 tcont 1 name INTERNET dba INTERNET
+onu 16 gemport 1 tcont 1 gemport_name INTERNET
+onu 16 gemport 1 traffic-limit upstream default downstream default
+onu 16 service INTERNET gemport 1 vlan 100
+onu 16 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 16 portvlan veip 1 mode transparent
+onu 16 pri equid VSOLD401
+onu 16 pri wan_conn add route 
+onu 16 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10005 pwd 1005 mode auto server PPPOE_SERVER1
+onu 16 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 16 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 17 profile ONU_1P sn VSOL00B635ED
+onu 17 desc 10047_1047
+onu 17 tcont 1 name INTERNET dba INTERNET
+onu 17 gemport 1 tcont 1 gemport_name INTERNET
+onu 17 gemport 1 traffic-limit upstream default downstream default
+onu 17 service INTERNET gemport 1 vlan 100
+onu 17 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 17 service-port 1 description INTERNET
+onu 17 portvlan veip 1 mode transparent
+onu 17 pri equid VSOLD401
+onu 17 pri wan_conn add route 
+onu 17 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10047 pwd 1047 mode auto server PPPOE_SERVER1
+onu 17 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 17 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 18 profile ONU_1P sn VSOL00B636B5
+onu 18 desc 10048_1048
+onu 18 tcont 1 name INTERNET dba INTERNET
+onu 18 gemport 1 tcont 1 gemport_name INTERNET
+onu 18 gemport 1 traffic-limit upstream default downstream default
+onu 18 service INTERNET gemport 1 vlan 100
+onu 18 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 18 service-port 1 description INTERNET
+onu 18 portvlan veip 1 mode transparent
+onu 18 pri equid VSOLD401
+onu 18 pri wan_conn add route 
+onu 18 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10048 pwd 1048 mode auto server PPPOE_SERVER1
+onu 18 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu add 19 profile ONU_1P sn HWTC6FB90B96
+onu 19 tcont 1 name INTERNET dba INTERNET
+onu 19 gemport 1 tcont 1 gemport_name INTERNET
+onu 19 gemport 1 traffic-limit upstream default downstream default
+onu 19 service INTERNET gemport 1 vlan 100
+onu 19 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 19 service-port 1 description INTERNET
+onu 19 portvlan veip 1 mode transparent
+onu add 20 profile ONU_1P sn VSOL00B63551
+onu 20 desc 10049_1049
+onu 20 tcont 1 name INTERNET dba INTERNET
+onu 20 gemport 1 tcont 1 gemport_name INTERNET
+onu 20 gemport 1 traffic-limit upstream default downstream default
+onu 20 service INTERNET gemport 1 vlan 100
+onu 20 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 20 service-port 1 description INTERNET
+onu 20 portvlan veip 1 mode transparent
+onu 20 pri equid VSOLD401
+onu 20 pri wan_conn add route 
+onu 20 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10049 pwd 1049 mode auto server PPPOE_SERVER1
+onu 20 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 20 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 21 profile Hw_4p sn HWTCD0EF6B96
+onu 21 desc 10050_1050
+onu 21 tcont 1 name INTERNET dba INTERNET
+onu 21 gemport 1 tcont 1 gemport_name INTERNET
+onu 21 gemport 1 traffic-limit upstream default downstream default
+onu 21 service INTERNET gemport 1 vlan 100
+onu 21 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 21 service-port 1 description INTERNET
+onu 21 portvlan veip 1 mode transparent
+onu add 22 profile ONU_1P sn VSOL00B63599
+onu 22 desc 10051_1051
+onu 22 tcont 1 name INTERNET dba INTERNET
+onu 22 gemport 1 tcont 1 gemport_name INTERNET
+onu 22 gemport 1 traffic-limit upstream default downstream default
+onu 22 service INTERNET gemport 1 vlan 100
+onu 22 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 22 service-port 1 description INTERNET
+onu 22 portvlan veip 1 mode transparent
+onu 22 pri equid VSOLD401
+onu 22 pri wan_conn add route 
+onu 22 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10051 pwd 1051 mode auto server PPPOE_SERVER1
+onu 22 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 22 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 23 profile ONU_1P sn VSOL00B63615
+onu 23 desc 10053_1053
+onu 23 tcont 1 name INTERNET dba INTERNET
+onu 23 gemport 1 tcont 1 gemport_name INTERNET
+onu 23 gemport 1 traffic-limit upstream default downstream default
+onu 23 service INTERNET gemport 1 vlan 100
+onu 23 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 23 service-port 1 description INTERNET
+onu 23 portvlan veip 1 mode transparent
+onu 23 pri equid VSOLD401
+onu 23 pri wan_conn add route 
+onu 23 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10053 pwd 1053 mode auto server PPPOE_SERVER1
+onu 23 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 23 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 24 profile ONU_1P sn VSOL00B634ED
+onu 24 desc 10058_1058
+onu 24 tcont 1 name INTERNET dba INTERNET
+onu 24 gemport 1 tcont 1 gemport_name INTERNET
+onu 24 gemport 1 traffic-limit upstream default downstream default
+onu 24 service INTERNET gemport 1 vlan 100
+onu 24 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 24 service-port 1 description INTERNET
+onu 24 portvlan veip 1 mode transparent
+onu 24 pri equid VSOLD401
+onu 24 pri wan_conn add route 
+onu 24 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10058 pwd 1058 mode auto server PPPOE_SERVER1
+onu 24 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 24 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 25 profile ONU_1P sn VSOL00B63445
+onu 25 desc 10059_1059
+onu 25 tcont 1 name INTERNET dba INTERNET
+onu 25 gemport 1 tcont 1 gemport_name INTERNET
+onu 25 gemport 1 traffic-limit upstream default downstream default
+onu 25 service INTERNET gemport 1 vlan 100
+onu 25 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 25 service-port 1 description INTERNET
+onu 25 portvlan veip 1 mode transparent
+onu 25 pri equid VSOLD401
+onu 25 pri wan_conn add route 
+onu 25 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10059 pwd 1059 mode auto server PPPOE_SERVER1
+onu 25 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 25 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 26 profile ONU_1P sn HWTC30B5709A
+onu 26 tcont 1 name INTERNET dba INTERNET
+onu 26 gemport 1 tcont 1 gemport_name INTERNET
+onu 26 gemport 1 traffic-limit upstream default downstream default
+onu 26 service INTERNET gemport 1 vlan 100
+onu 26 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 26 service-port 1 description INTERNET
+onu 26 portvlan veip 1 mode transparent
+onu add 27 profile ONU_1P sn HWTC72B50E9A
+onu 27 desc 10061_1061
+onu 27 tcont 1 name INTERNET dba INTERNET
+onu 27 gemport 1 tcont 1 gemport_name INTERNET
+onu 27 gemport 1 traffic-limit upstream default downstream default
+onu 27 service INTERNET gemport 1 vlan 100
+onu 27 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 27 service-port 1 description INTERNET
+onu 27 portvlan veip 1 mode transparent
+onu add 28 profile ONU_1P sn VSOL00B63519
+onu 28 desc 10062_1062
+onu 28 tcont 1 name INTERNET dba INTERNET
+onu 28 gemport 1 tcont 1 gemport_name INTERNET
+onu 28 gemport 1 traffic-limit upstream default downstream default
+onu 28 service INTERNET gemport 1 vlan 100
+onu 28 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 28 service-port 1 description INTERNET
+onu 28 portvlan veip 1 mode transparent
+onu 28 pri equid VSOLD401
+onu 28 pri wan_conn add route 
+onu 28 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10062 pwd 1062 mode auto server PPPOE_SERVER1
+onu 28 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 28 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 29 profile ONU_1P sn HWTCDD154F96
+onu 29 desc 10064_1064
+onu 29 tcont 1 name INTERNET dba INTERNET
+onu 29 gemport 1 tcont 1 gemport_name INTERNET
+onu 29 gemport 1 traffic-limit upstream default downstream default
+onu 29 service INTERNET gemport 1 vlan 100
+onu 29 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 29 service-port 1 description INTERNET
+onu 29 portvlan veip 1 mode transparent
+onu add 30 profile ONU_1P sn VSOL00B63699
+onu 30 desc 10066_1066
+onu 30 tcont 1 name INTERNET dba INTERNET
+onu 30 gemport 1 tcont 1 gemport_name INTERNET
+onu 30 gemport 1 traffic-limit upstream default downstream default
+onu 30 service INTERNET gemport 1 vlan 100
+onu 30 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 30 service-port 1 description INTERNET
+onu 30 portvlan veip 1 mode transparent
+onu 30 pri equid VSOLD401
+onu 30 pri wan_conn add route 
+onu 30 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10066 pwd 1066 mode auto server PPPOE_SERVER1
+onu 30 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 30 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 31 profile default sn HWTCBB16894C
+onu 31 desc 10145_1145
+onu 31 tcont 1 name INTERNET dba INTERNET
+onu 31 gemport 1 tcont 1 gemport_name INTERNET
+onu 31 gemport 1 traffic-limit upstream default downstream default
+onu 31 service INTERNET gemport 1 vlan 100
+onu 31 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 31 service-port 1 description INTERNET
+onu 31 portvlan veip 1 mode transparent
+onu add 32 profile ONU_1P sn VSOL0006A0DD
+onu 32 desc 10071-1071
+onu 32 tcont 1 name INTERNET dba INTERNET
+onu 32 gemport 1 tcont 1 gemport_name INTERNET
+onu 32 gemport 1 traffic-limit upstream default downstream default
+onu 32 service INTERNET gemport 1 vlan 100
+onu 32 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 32 service-port 1 description INTERNET
+onu 32 portvlan veip 1 mode transparent
+onu 32 pri equid VSOLD401
+onu 32 pri wan_conn add route 
+onu 32 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10071 pwd 1071 mode auto server PPPOE_SERVER1
+onu 32 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 32 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 33 profile ONU_1P sn HWTC66F08D9C
+onu 33 desc 10072_1072
+onu 33 tcont 1 name INTERNET dba INTERNET
+onu 33 gemport 1 tcont 1 gemport_name INTERNET
+onu 33 gemport 1 traffic-limit upstream default downstream default
+onu 33 service INTERNET gemport 1 vlan 100
+onu 33 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 33 service-port 1 description INTERNET
+onu 33 portvlan veip 1 mode transparent
+onu add 34 profile ONU_1P sn VSOL0006B185
+onu 34 desc 10074_1074
+onu 34 tcont 1 name INTERNET dba INTERNET
+onu 34 gemport 1 tcont 1 gemport_name INTERNET
+onu 34 gemport 1 traffic-limit upstream default downstream default
+onu 34 service INTERNET gemport 1 vlan 100
+onu 34 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 34 service-port 1 description INTERNET
+onu 34 portvlan veip 1 mode transparent
+onu 34 pri equid VSOLD401
+onu 34 pri wan_conn add route 
+onu 34 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10074 pwd 1074 mode auto server PPPOE_SERVER1
+onu 34 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 34 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 35 profile ONU_1P sn VSOL0006D5D5
+onu 35 desc 10076_1076
+onu 35 tcont 1 name INTERNET dba INTERNET
+onu 35 gemport 1 tcont 1 gemport_name INTERNET
+onu 35 gemport 1 traffic-limit upstream default downstream default
+onu 35 service INTERNET gemport 1 vlan 100
+onu 35 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 35 service-port 1 description INTERNET
+onu 35 portvlan veip 1 mode transparent
+onu 35 pri equid VSOLD401
+onu 35 pri wan_conn add route 
+onu 35 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10076 pwd 1076 mode auto server PPPOE_SERVER1
+onu 35 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 35 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 36 profile ONU_1P sn VSOL0006ADFD
+onu 36 desc 10077_1077
+onu 36 tcont 1 name INTERNET dba INTERNET
+onu 36 gemport 1 tcont 1 gemport_name INTERNET
+onu 36 gemport 1 traffic-limit upstream default downstream default
+onu 36 service INTERNET gemport 1 vlan 100
+onu 36 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 36 service-port 1 description INTERNET
+onu 36 portvlan veip 1 mode transparent
+onu 36 pri equid VSOLD401
+onu 36 pri wan_conn add route 
+onu 36 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10077 pwd 1077 mode auto server PPPOE_SERVER1
+onu 36 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 36 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 37 profile ONU_1P sn HWTC32E8059A
+onu 37 desc 10079_1079
+onu 37 tcont 1 name INTERNET dba INTERNET
+onu 37 gemport 1 tcont 1 gemport_name INTERNET
+onu 37 gemport 1 traffic-limit upstream default downstream default
+onu 37 service INTERNET gemport 1 vlan 100
+onu 37 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 37 service-port 1 description INTERNET
+onu 37 portvlan veip 1 mode transparent
+onu add 38 profile ONU_1P sn VSOL00065E9D
+onu 38 desc 10078_1078
+onu 38 tcont 1 name INTERNET dba INTERNET
+onu 38 gemport 1 tcont 1 gemport_name INTERNET
+onu 38 gemport 1 traffic-limit upstream default downstream default
+onu 38 service INTERNET gemport 1 vlan 100
+onu 38 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 38 service-port 1 description INTERNET
+onu 38 portvlan veip 1 mode transparent
+onu 38 pri equid VSOLD401
+onu 38 pri wan_conn add route 
+onu 38 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10078 pwd 1078 mode auto server PPPOE_SERVER1
+onu 38 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 38 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 39 profile ONU_1P sn HWTCA316D37C
+onu 39 desc 10080_1080
+onu 39 tcont 1 name INTERNET dba INTERNET
+onu 39 gemport 1 tcont 1 gemport_name INTERNET
+onu 39 gemport 1 traffic-limit upstream default downstream default
+onu 39 service INTERNET gemport 1 vlan 100
+onu 39 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 39 service-port 1 description INTERNET
+onu 39 portvlan veip 1 mode transparent
+onu add 40 profile ONU_1P sn HWTCF5CD14EB
+onu 40 desc 10082_1082
+onu 40 tcont 1 name INTERNET dba INTERNET
+onu 40 gemport 1 tcont 1 gemport_name INTERNET
+onu 40 gemport 1 traffic-limit upstream default downstream default
+onu 40 service INTERNET gemport 1 vlan 100
+onu 40 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 40 service-port 1 description INTERNET
+onu 40 portvlan veip 1 mode transparent
+onu add 41 profile ONU_1P sn HWTCBBCB45EC
+onu 41 desc 10093_1093
+onu 41 tcont 1 name INTERNET dba INTERNET
+onu 41 gemport 1 tcont 1 gemport_name INTERNET
+onu 41 gemport 1 traffic-limit upstream default downstream default
+onu 41 service INTERNET gemport 1 vlan 100
+onu 41 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 41 service-port 1 description INTERNET
+onu 41 portvlan veip 1 mode transparent
+onu add 42 profile ONU_1P sn VSOL00FDD2F1
+onu 42 desc 10095_1095
+onu 42 tcont 1 name INTERNET dba INTERNET
+onu 42 gemport 1 tcont 1 gemport_name INTERNET
+onu 42 gemport 1 traffic-limit upstream default downstream default
+onu 42 service INTERNET gemport 1 vlan 100
+onu 42 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 42 service-port 1 description INTERNET
+onu 42 portvlan veip 1 mode transparent
+onu 42 pri equid VSOLD401
+onu 42 pri wan_conn add route 
+onu 42 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10095 pwd 1095 mode auto server PPPOE_SERVER1
+onu 42 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 42 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 43 profile ONU_1P sn VSOL00069D3D
+onu 43 desc 10097_1097
+onu 43 tcont 1 name INTERNET dba INTERNET
+onu 43 gemport 1 tcont 1 gemport_name INTERNET
+onu 43 gemport 1 traffic-limit upstream default downstream default
+onu 43 service INTERNET gemport 1 vlan 100
+onu 43 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 43 service-port 1 description INTERNET
+onu 43 portvlan veip 1 mode transparent
+onu 43 pri equid VSOLD401
+onu 43 pri wan_conn add route 
+onu 43 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10097 pwd 1097 mode auto server PPPOE_SERVER1
+onu 43 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 43 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 44 profile ONU_1P sn VSOL0006C9BD
+onu 44 desc 10098_1098
+onu 44 tcont 1 name INTERNET dba INTERNET
+onu 44 gemport 1 tcont 1 gemport_name INTERNET
+onu 44 gemport 1 traffic-limit upstream default downstream default
+onu 44 service INTERNET gemport 1 vlan 100
+onu 44 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 44 service-port 1 description INTERNET
+onu 44 portvlan veip 1 mode transparent
+onu 44 pri equid VSOLD401
+onu 44 pri wan_conn add route 
+onu 44 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10098 pwd 1098 mode auto server PPPOE_SERVER1
+onu 44 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 44 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 45 profile ONU_1P sn HWTCBB17845C
+onu 45 tcont 1 name INTERNET dba INTERNET
+onu 45 gemport 1 tcont 1 gemport_name INTERNET
+onu 45 gemport 1 traffic-limit upstream default downstream default
+onu 45 service INTERNET gemport 1 vlan 100
+onu 45 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 45 service-port 1 description INTERNET
+onu 45 portvlan veip 1 mode transparent
+onu add 46 profile ONU_1P sn HWTC24BAEC9A
+onu 46 desc 10106_1106
+onu 46 tcont 1 name INTERNET dba INTERNET
+onu 46 gemport 1 tcont 1 gemport_name INTERNET
+onu 46 gemport 1 traffic-limit upstream default downstream default
+onu 46 service INTERNET gemport 1 vlan 100
+onu 46 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 46 service-port 1 description INTERNET
+onu 46 portvlan veip 1 mode transparent
+onu add 47 profile Hw_4p sn HWTC63531697
+onu 47 desc 10110_1110
+onu 47 tcont 1 name INTERNET dba INTERNET
+onu 47 gemport 1 tcont 1 gemport_name INTERNET
+onu 47 gemport 1 traffic-limit upstream default downstream default
+onu 47 service INTERNET gemport 1 vlan 100
+onu 47 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 47 service-port 1 description INTERNET
+onu 47 portvlan veip 1 mode transparent
+onu add 48 profile ONU_1P sn HWTC5DB69F9A
+onu 48 tcont 1 name INTERNET dba INTERNET
+onu 48 gemport 1 tcont 1 gemport_name INTERNET
+onu 48 gemport 1 traffic-limit upstream default downstream default
+onu 48 service INTERNET gemport 1 vlan 100
+onu 48 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 48 service-port 1 description INTERNET
+onu 48 portvlan veip 1 mode transparent
+onu add 49 profile ONU_1P sn VSOL0009BA8D
+onu 49 desc 10113_1113
+onu 49 tcont 1 name INTERNET dba INTERNET
+onu 49 gemport 1 tcont 1 gemport_name INTERNET
+onu 49 gemport 1 traffic-limit upstream default downstream default
+onu 49 service INTERNET gemport 1 vlan 100
+onu 49 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 49 service-port 1 description INTERNET
+onu 49 portvlan veip 1 mode transparent
+onu 49 pri equid VSOLD401
+onu 49 pri wan_conn add route 
+onu 49 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10113 pwd 1113 mode auto server PPPOE_SERVER1
+onu 49 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 49 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 50 profile ONU_1P sn HWTCDD16A29C
+onu 50 desc COPA
+onu 50 tcont 1 name INTERNET dba INTERNET
+onu 50 gemport 1 tcont 1 gemport_name INTERNET
+onu 50 gemport 1 traffic-limit upstream default downstream default
+onu 50 service INTERNET gemport 1 vlan 100
+onu 50 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 50 service-port 1 description INTERNET
+onu 50 portvlan veip 1 mode transparent
+onu add 51 profile Hw_4p sn HWTC1412F09A
+onu 51 tcont 1 name INTERNET dba INTERNET
+onu 51 gemport 1 tcont 1 gemport_name INTERNET
+onu 51 gemport 1 traffic-limit upstream default downstream default
+onu 51 service INTERNET gemport 1 vlan 100
+onu 51 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 51 service-port 1 description INTERNET
+onu 51 portvlan veip 1 mode transparent
+onu add 52 profile Hw_4p sn HWTC24B81E9A
+onu 52 tcont 1 name INTERNET dba INTERNET
+onu 52 gemport 1 tcont 1 gemport_name INTERNET
+onu 52 gemport 1 traffic-limit upstream default downstream default
+onu 52 service INTERNET gemport 1 vlan 100
+onu 52 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 52 service-port 1 description INTERNET
+onu 52 portvlan veip 1 mode transparent
+onu add 53 profile Hw_4p sn HWTC2C42667C
+onu 53 desc 10124_1124
+onu 53 tcont 1 name INTERNET dba INTERNET
+onu 53 gemport 1 tcont 1 gemport_name INTERNET
+onu 53 gemport 1 traffic-limit upstream default downstream default
+onu 53 service INTERNET gemport 1 vlan 100
+onu 53 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 53 service-port 1 description INTERNET
+onu 53 portvlan veip 1 mode transparent
+onu add 54 profile ONU_1P sn HWTC14FE6696
+onu 54 desc 10125_1125
+onu 54 tcont 1 name INTERNET dba INTERNET
+onu 54 gemport 1 tcont 1 gemport_name INTERNET
+onu 54 gemport 1 traffic-limit upstream default downstream default
+onu 54 service INTERNET gemport 1 vlan 100
+onu 54 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 54 service-port 1 description INTERNET
+onu 54 portvlan veip 1 mode transparent
+onu add 55 profile ONU_1P sn HWTCA69AF57C
+onu 55 desc 10127_1127
+onu 55 tcont 1 name INTERNET dba INTERNET
+onu 55 gemport 1 tcont 1 gemport_name INTERNET
+onu 55 gemport 1 traffic-limit upstream default downstream default
+onu 55 service INTERNET gemport 1 vlan 100
+onu 55 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 55 service-port 1 description INTERNET
+onu 55 portvlan veip 1 mode transparent
+onu add 56 profile ONU_1P sn VSOL0009C581
+onu 56 desc 10128_1128
+onu 56 tcont 1 name INTERNET dba INTERNET
+onu 56 gemport 1 tcont 1 gemport_name INTERNET
+onu 56 gemport 1 traffic-limit upstream default downstream default
+onu 56 service INTERNET gemport 1 vlan 100
+onu 56 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 56 service-port 1 description INTERNET
+onu 56 portvlan veip 1 mode transparent
+onu 56 pri equid VSOLD401
+onu 56 pri wan_conn add route 
+onu 56 pri wan_conn index 1 route internet nat enable pppoe proxy enable user 10128 pwd 1128 mode auto server PPPOE_SERVER1
+onu 56 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 56 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 57 profile ONU_1P sn HWTCDC7F0E9C
+onu 57 desc 10132_1132
+onu 57 tcont 1 name INTERNET dba INTERNET
+onu 57 gemport 1 tcont 1 gemport_name INTERNET
+onu 57 gemport 1 traffic-limit upstream default downstream default
+onu 57 service INTERNET gemport 1 vlan 100
+onu 57 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 57 service-port 1 description INTERNET
+onu 57 portvlan veip 1 mode transparent
+onu add 58 profile ONU_1P sn HWTC36F2DC9B
+onu 58 desc 10133_1133
+onu 58 tcont 1 name INTERNET dba INTERNET
+onu 58 gemport 1 tcont 1 gemport_name INTERNET
+onu 58 gemport 1 traffic-limit upstream default downstream default
+onu 58 service INTERNET gemport 1 vlan 100
+onu 58 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 58 service-port 1 description INTERNET
+onu 58 portvlan veip 1 mode transparent
+onu add 59 profile ONU_1P sn HWTC73A0D47C
+onu 59 desc 10138_1138
+onu 59 tcont 1 name INTERNET dba INTERNET
+onu 59 gemport 1 tcont 1 gemport_name INTERNET
+onu 59 gemport 1 traffic-limit upstream default downstream default
+onu 59 service INTERNET gemport 1 vlan 100
+onu 59 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 59 service-port 1 description INTERNET
+onu 59 portvlan veip 1 mode transparent
+onu add 60 profile ONU_1P sn HWTCBBC1F88C
+onu 60 desc 10141_1141
+onu 60 tcont 1 name INTERNET dba INTERNET
+onu 60 gemport 1 tcont 1 gemport_name INTERNET
+onu 60 gemport 1 traffic-limit upstream default downstream default
+onu 60 service INTERNET gemport 1 vlan 100
+onu 60 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 60 service-port 1 description INTERNET
+onu 60 portvlan veip 1 mode transparent
+onu add 61 profile ONU_1P sn VSOL0009BB51
+onu 61 desc 10142_1142
+onu 61 tcont 1 name INTERNET dba INTERNET
+onu 61 gemport 1 tcont 1 gemport_name INTERNET
+onu 61 gemport 1 traffic-limit upstream default downstream default
+onu 61 service INTERNET gemport 1 vlan 100
+onu 61 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 61 service-port 1 description INTERNET
+onu 61 portvlan veip 1 mode transparent
+onu 61 pri equid VSOLD401
+onu 61 pri wan_conn add route 
+onu 61 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10142 pwd 1142 mode auto server PPPOE_SERVER1
+onu 61 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 61 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 62 profile ONU_1P sn VSOL0009D831
+onu 62 desc 10143_1143
+onu 62 tcont 1 name INTERNET dba INTERNET
+onu 62 gemport 1 tcont 1 gemport_name INTERNET
+onu 62 gemport 1 traffic-limit upstream default downstream default
+onu 62 service INTERNET gemport 1 vlan 100
+onu 62 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 62 service-port 1 description INTERNET
+onu 62 portvlan veip 1 mode transparent
+onu 62 pri equid VSOLD401
+onu 62 pri wan_conn add route 
+onu 62 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10143 pwd 1143 mode auto server PPPOE_SERVER1
+onu 62 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 62 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 63 profile Hw_4p sn HWTC4653889B
+onu 63 desc 10147_1147
+onu 63 tcont 1 name INTERNET dba INTERNET
+onu 63 gemport 1 tcont 1 gemport_name INTERNET
+onu 63 gemport 1 traffic-limit upstream default downstream default
+onu 63 service INTERNET gemport 1 vlan 100
+onu 63 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 63 service-port 1 description INTERNET
+onu 63 portvlan veip 1 mode transparent
+onu add 64 profile ONU_1P sn HWTC545614A3
+onu 64 desc 1049_1149
+onu 64 tcont 1 name INTERNET dba INTERNET
+onu 64 gemport 1 tcont 1 gemport_name INTERNET
+onu 64 gemport 1 traffic-limit upstream default downstream default
+onu 64 service INTERNET gemport 1 vlan 100
+onu 64 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 64 service-port 1 description INTERNET
+onu 64 portvlan veip 1 mode transparent
+onu add 65 profile ONU_1P sn HWTCD1B9899A
+onu 65 desc 10155_1155
+onu 65 tcont 1 name INTERNET dba INTERNET
+onu 65 gemport 1 tcont 1 gemport_name INTERNET
+onu 65 gemport 1 traffic-limit upstream default downstream default
+onu 65 service INTERNET gemport 1 vlan 100
+onu 65 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 65 service-port 1 description INTERNET
+onu 65 gemport 2 tcont 1 gemport_name gem_2
+onu 65 gemport 2 traffic-limit upstream default downstream default
+onu 65 portvlan veip 1 mode transparent
+onu add 66 profile ONU_1P sn HWTCBEAB209E
+onu 66 desc 10158_1158
+onu 66 tcont 1 name INTERNET dba INTERNET
+onu 66 gemport 1 tcont 1 gemport_name INTERNET
+onu 66 gemport 1 traffic-limit upstream default downstream default
+onu 66 service INTERNET gemport 1 vlan 100
+onu 66 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 66 service-port 1 description INTERNET
+onu 66 portvlan veip 1 mode transparent
+onu add 67 profile ONU_1P sn HWTC061A59A1
+onu 67 desc 10164_1164
+onu 67 tcont 1 name INTERNET dba INTERNET
+onu 67 gemport 1 tcont 1 gemport_name INTERNET
+onu 67 gemport 1 traffic-limit upstream default downstream default
+onu 67 service INTERNET gemport 1 vlan 100
+onu 67 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 67 service-port 1 description INTERNET
+onu 67 portvlan veip 1 mode transparent
+onu add 68 profile ONU_1P sn HWTC07282EA1
+onu 68 desc 10165_1165
+onu 68 tcont 1 name INTERNET dba INTERNET
+onu 68 gemport 1 tcont 1 gemport_name INTERNET
+onu 68 gemport 1 traffic-limit upstream default downstream default
+onu 68 service INTERNET gemport 1 vlan 100
+onu 68 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 68 service-port 1 description INTERNET
+onu 68 portvlan veip 1 mode transparent
+onu add 69 profile ONU_1P sn HWTC46C97E7C
+onu 69 desc 10168_1168
+onu 69 tcont 1 name INTERNET dba INTERNET
+onu 69 gemport 1 tcont 1 gemport_name INTERNET
+onu 69 gemport 1 traffic-limit upstream default downstream default
+onu 69 service INTERNET gemport 1 vlan 100
+onu 69 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 69 service-port 1 description INTERNET
+onu 69 portvlan veip 1 mode transparent
+onu add 70 profile ONU_1P sn HWTC220F0C7C
+onu 70 desc 10169_1169
+onu 70 tcont 1 name INTERNET dba INTERNET
+onu 70 gemport 1 tcont 1 gemport_name INTERNET
+onu 70 gemport 1 traffic-limit upstream default downstream default
+onu 70 service INTERNET gemport 1 vlan 100
+onu 70 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 70 service-port 1 description INTERNET
+onu 70 portvlan veip 1 mode transparent
+onu add 71 profile ONU_1P sn HWTC031076A1
+onu 71 desc 10173_1173
+onu 71 tcont 1 name INTERNET dba INTERNET
+onu 71 gemport 1 tcont 1 gemport_name INTERNET
+onu 71 gemport 1 traffic-limit upstream default downstream default
+onu 71 service INTERNET gemport 1 vlan 100
+onu 71 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 71 service-port 1 description INTERNET
+onu 71 portvlan veip 1 mode transparent
+onu add 72 profile ONU_1P sn HWTC0776A97C
+onu 72 desc 10175_1175
+onu 72 tcont 1 name INTERNET dba INTERNET
+onu 72 gemport 1 tcont 1 gemport_name INTERNET
+onu 72 gemport 1 traffic-limit upstream default downstream default
+onu 72 service INTERNET gemport 1 vlan 100
+onu 72 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 72 service-port 1 description INTERNET
+onu 72 portvlan veip 1 mode transparent
+exit
+!
+interface gpon0/2
+no onu auto-learn
+onu add 1 profile ONU_1P sn HWTC1B83C795
+onu 1 tcont 1 name INTERNET dba INTERNET
+onu 1 gemport 1 tcont 1 gemport_name INTERNET
+onu 1 gemport 1 traffic-limit upstream default downstream default
+onu 1 service INTERNET gemport 1 vlan 100
+onu 1 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 1 service-port 1 description INTERNET
+onu 1 portvlan veip 1 mode transparent
+onu add 2 profile ONU_1P sn HWTC78345196
+onu 2 tcont 1 name INTERNET dba INTERNET
+onu 2 gemport 1 tcont 1 gemport_name INTERNET
+onu 2 gemport 1 traffic-limit upstream default downstream default
+onu 2 service INTERNET gemport 1 vlan 100
+onu 2 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 2 service-port 1 description INTERNET
+onu 2 portvlan veip 1 mode transparent
+onu add 3 profile ONU_1P sn VSOL00B634F1
+onu 3 desc 10006_1006
+onu 3 tcont 1 name INTERNET dba INTERNET
+onu 3 gemport 1 tcont 1 gemport_name INTERNET
+onu 3 gemport 1 traffic-limit upstream default downstream default
+onu 3 service INTERNET gemport 1 vlan 100
+onu 3 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 3 service-port 1 description INTERNET
+onu 3 portvlan veip 1 mode transparent
+onu 3 pri equid VSOLD401
+onu 3 pri username admin_control enable admin stdONUi0i user_control disable 
+onu add 4 profile ONU_1P sn VSOL00B634FD
+onu 4 desc 10036_1036
+onu 4 tcont 1 name INTERNET dba INTERNET
+onu 4 gemport 1 tcont 1 gemport_name INTERNET
+onu 4 gemport 1 traffic-limit upstream default downstream default
+onu 4 service INTERNET gemport 1 vlan 100
+onu 4 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 4 service-port 1 description INTERNET
+onu 4 pri equid VSOLD401
+onu add 5 profile ONU_1P sn VSOL00B63471
+onu 5 desc 10026_1026
+onu 5 tcont 1 name INTERNET dba INTERNET
+onu 5 gemport 1 tcont 1 gemport_name INTERNET
+onu 5 gemport 1 traffic-limit upstream default downstream default
+onu 5 service INTERNET gemport 1 vlan 100
+onu 5 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 5 service-port 1 description INTERNET
+onu 5 portvlan veip 1 mode transparent
+onu 5 pri equid VSOLD401
+onu add 6 profile ONU_1P sn HWTC03BF5BA1
+onu 6 desc 10057_1057
+onu 6 tcont 1 name INTERNET dba INTERNET
+onu 6 gemport 1 tcont 1 gemport_name INTERNET
+onu 6 gemport 1 traffic-limit upstream default downstream default
+onu 6 service INTERNET gemport 1 vlan 100
+onu 6 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 6 service-port 1 description INTERNET
+onu 6 portvlan veip 1 mode transparent
+onu add 7 profile ONU_1P sn VSOL00B63605
+onu 7 tcont 1 name INTERNET dba INTERNET
+onu 7 gemport 1 tcont 1 gemport_name INTERNET
+onu 7 gemport 1 traffic-limit upstream default downstream default
+onu 7 service INTERNET gemport 1 vlan 100
+onu 7 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 7 service-port 1 description INTERNET
+onu 7 portvlan veip 1 mode transparent
+onu 7 pri equid VSOLD401
+onu add 8 profile ONU_1P sn VSOL00B63619
+onu 8 desc 10037_1037
+onu 8 tcont 1 name INTERNET dba INTERNET
+onu 8 gemport 1 tcont 1 gemport_name INTERNET
+onu 8 gemport 1 traffic-limit upstream default downstream default
+onu 8 service INTERNET gemport 1 vlan 100
+onu 8 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 8 service-port 1 description INTERNET
+onu 8 portvlan veip 1 mode transparent
+onu 8 pri equid VSOLD401
+onu add 9 profile ONU_1P sn VSOL00B63449
+onu 9 desc 10068_1068
+onu 9 tcont 1 name INTERNET dba INTERNET
+onu 9 gemport 1 tcont 1 gemport_name INTERNET
+onu 9 gemport 1 traffic-limit upstream default downstream default
+onu 9 service INTERNET gemport 1 vlan 100
+onu 9 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 9 service-port 1 description INTERNET
+onu 9 portvlan veip 1 mode transparent
+onu 9 pri equid VSOLD401
+onu add 10 profile Hw_4p sn HWTC2D85CD9A
+onu 10 desc falta01
+onu 10 tcont 1 name INTERNET dba INTERNET
+onu 10 gemport 1 tcont 1 gemport_name INTERNET
+onu 10 gemport 1 traffic-limit upstream default downstream default
+onu 10 service INTERNET gemport 1 vlan 100
+onu 10 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 10 service-port 1 description INTERNET
+onu 10 portvlan veip 1 mode transparent
+onu add 11 profile ONU_1P sn VSOL00B635AD
+onu 11 desc 10008_1008
+onu 11 tcont 1 name INTERNET dba INTERNET
+onu 11 gemport 1 tcont 1 gemport_name INTERNET
+onu 11 gemport 1 traffic-limit upstream default downstream default
+onu 11 service INTERNET gemport 1 vlan 100
+onu 11 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 11 service-port 1 description INTERNET
+onu 11 portvlan veip 1 mode transparent
+onu 11 pri equid VSOLD401
+onu add 12 profile ONU_1P sn VSOL00B63681
+onu 12 tcont 1 name INTERNET dba INTERNET
+onu 12 gemport 1 tcont 1 gemport_name INTERNET
+onu 12 gemport 1 traffic-limit upstream default downstream default
+onu 12 service INTERNET gemport 1 vlan 100
+onu 12 portvlan veip 1 mode transparent
+onu 12 pri equid VSOLD401
+onu add 13 profile ONU_1P sn VSOL00B636D9
+onu 13 desc 10063_1063
+onu 13 tcont 1 name INTERNET dba INTERNET
+onu 13 gemport 1 tcont 1 gemport_name INTERNET
+onu 13 gemport 1 traffic-limit upstream default downstream default
+onu 13 service INTERNET gemport 1 vlan 100
+onu 13 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 13 service-port 1 description INTERNET
+onu 13 portvlan veip 1 mode transparent
+onu 13 pri equid VSOLD401
+onu add 14 profile ONU_1P sn VSOL00B6347D
+onu 14 desc 10054_1054
+onu 14 tcont 1 name INTERNET dba INTERNET
+onu 14 gemport 1 tcont 1 gemport_name INTERNET
+onu 14 gemport 1 traffic-limit upstream default downstream default
+onu 14 service INTERNET gemport 1 vlan 100
+onu 14 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 14 service-port 1 description INTERNET
+onu 14 portvlan veip 1 mode transparent
+onu 14 pri equid VSOLD401
+onu add 15 profile Hw_4p sn HWTC7DDCE397
+onu 15 tcont 1 name INTERNET dba INTERNET
+onu 15 gemport 1 tcont 1 gemport_name INTERNET
+onu 15 gemport 1 traffic-limit upstream default downstream default
+onu 15 service INTERNET gemport 1 vlan 100
+onu 15 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 15 service-port 1 description INTERNET
+onu 15 portvlan veip 1 mode transparent
+onu add 16 profile ONU_1P sn VSOL00B6349D
+onu 16 desc 10030_1030
+onu 16 pri equid VSOLD401
+onu add 17 profile ONU_1P sn VSOL00B63479
+onu 17 desc 10013_1013
+onu 17 tcont 1 name INTERNET dba INTERNET
+onu 17 gemport 1 tcont 1 gemport_name INTERNET
+onu 17 gemport 1 traffic-limit upstream default downstream default
+onu 17 service INTERNET gemport 1 vlan 100
+onu 17 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 17 service-port 1 description INTERNET
+onu 17 portvlan veip 1 mode transparent
+onu 17 pri equid VSOLD401
+onu add 18 profile ONU_1P sn VSOL00B63511
+onu 18 desc 10018_1018
+onu 18 tcont 1 name INTERNET dba INTERNET
+onu 18 gemport 1 tcont 1 gemport_name INTERNET
+onu 18 gemport 1 traffic-limit upstream default downstream default
+onu 18 service INTERNET gemport 1 vlan 100
+onu 18 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 18 service-port 1 description INTERNET
+onu 18 portvlan veip 1 mode transparent
+onu 18 pri equid VSOLD401
+onu add 19 profile ONU_1P sn VSOL00B634D9
+onu 19 desc 10024_1024
+onu 19 tcont 1 name INTERNET dba INTERNET
+onu 19 gemport 1 tcont 1 gemport_name INTERNET
+onu 19 gemport 1 traffic-limit upstream default downstream default
+onu 19 service INTERNET gemport 1 vlan 100
+onu 19 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 19 service-port 1 description INTERNET
+onu 19 portvlan veip 1 mode transparent
+onu 19 pri equid VSOLD401
+onu add 20 profile ONU_1P sn HWTC42F29FA1
+onu 20 desc 10162_1162
+onu 20 tcont 1 name INTERNET dba INTERNET
+onu 20 gemport 1 tcont 1 gemport_name INTERNET
+onu 20 gemport 1 traffic-limit upstream default downstream default
+onu 20 service INTERNET gemport 1 vlan 100
+onu 20 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 20 service-port 1 description INTERNET
+onu 20 portvlan veip 1 mode transparent
+onu add 21 profile ONU_1P sn VSOL00B636A5
+onu 21 desc 10017_1017
+onu 21 tcont 1 name INTERNET dba INTERNET
+onu 21 gemport 1 tcont 1 gemport_name INTERNET
+onu 21 gemport 1 traffic-limit upstream default downstream default
+onu 21 service INTERNET gemport 1 vlan 100
+onu 21 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 21 service-port 1 description INTERNET
+onu 21 portvlan veip 1 mode transparent
+onu 21 pri equid VSOLD401
+onu add 22 profile Hw_4p sn HWTCAEB5789A
+onu 22 tcont 1 name INTERNET dba INTERNET
+onu 22 gemport 1 tcont 1 gemport_name INTERNET
+onu 22 gemport 1 traffic-limit upstream default downstream default
+onu 22 service INTERNET gemport 1 vlan 100
+onu 22 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 22 service-port 1 description INTERNET
+onu 22 portvlan veip 1 mode transparent
+onu add 23 profile Hw_4p sn HWTC6EF78496
+onu 23 tcont 1 name INTERNET dba INTERNET
+onu 23 gemport 1 tcont 1 gemport_name INTERNET
+onu 23 gemport 1 traffic-limit upstream default downstream default
+onu 23 service INTERNET gemport 1 vlan 100
+onu 23 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 23 service-port 1 description INTERNET
+onu 23 portvlan veip 1 mode transparent
+onu add 24 profile Hw_4p sn HWTCB8A5C39A
+onu 24 tcont 1 name INTERNET dba INTERNET
+onu 24 gemport 1 tcont 1 gemport_name INTERNET
+onu 24 gemport 1 traffic-limit upstream default downstream default
+onu 24 service INTERNET gemport 1 vlan 100
+onu 24 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 24 service-port 1 description INTERNET
+onu 24 portvlan veip 1 mode transparent
+onu add 25 profile Hw_4p sn HWTC10461D92
+onu 25 tcont 1 name INTERNET dba INTERNET
+onu 25 gemport 1 tcont 1 gemport_name INTERNET
+onu 25 gemport 1 traffic-limit upstream default downstream default
+onu 25 service INTERNET gemport 1 vlan 100
+onu 25 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 25 service-port 1 description INTERNET
+onu 25 portvlan veip 1 mode transparent
+onu add 26 profile Hw_4p sn HWTCF559769B
+onu 26 tcont 1 name INTERNET dba INTERNET
+onu 26 gemport 1 tcont 1 gemport_name INTERNET
+onu 26 gemport 1 traffic-limit upstream default downstream default
+onu 26 service INTERNET gemport 1 vlan 100
+onu 26 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 26 service-port 1 description INTERNET
+onu 26 portvlan veip 1 mode transparent
+onu add 27 profile ONU_1P sn VSOL00B636AD
+onu 27 desc 10010_1010
+onu 27 tcont 1 name INTERNET dba INTERNET
+onu 27 gemport 1 tcont 1 gemport_name INTERNET
+onu 27 gemport 1 traffic-limit upstream default downstream default
+onu 27 service INTERNET gemport 1 vlan 100
+onu 27 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 27 service-port 1 description INTERNET
+onu 27 portvlan veip 1 mode transparent
+onu 27 pri equid VSOLD401
+onu add 28 profile ONU_1P sn VSOL00B63505
+onu 28 desc 10020_1020
+onu 28 tcont 1 name INTERNET dba INTERNET
+onu 28 gemport 1 tcont 1 gemport_name INTERNET
+onu 28 gemport 1 traffic-limit upstream default downstream default
+onu 28 service INTERNET gemport 1 vlan 100
+onu 28 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 28 service-port 1 description INTERNET
+onu 28 portvlan veip 1 mode transparent
+onu 28 pri equid VSOLD401
+onu add 29 profile ONU_1P sn VSOL00B635C5
+onu 29 desc 10007_1007
+onu 29 tcont 1 name INTERNET dba INTERNET
+onu 29 gemport 1 tcont 1 gemport_name INTERNET
+onu 29 gemport 1 traffic-limit upstream default downstream default
+onu 29 service INTERNET gemport 1 vlan 100
+onu 29 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 29 service-port 1 description INTERNET
+onu 29 portvlan veip 1 mode transparent
+onu 29 pri equid VSOLD401
+onu add 30 profile ONU_1P sn VSOL00B635BD
+onu 30 desc 10073_1073
+onu 30 tcont 1 name INTERNET dba INTERNET
+onu 30 gemport 1 tcont 1 gemport_name INTERNET
+onu 30 gemport 1 traffic-limit upstream default downstream default
+onu 30 service INTERNET gemport 1 vlan 100
+onu 30 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 30 service-port 1 description INTERNET
+onu 30 portvlan veip 1 mode transparent
+onu 30 pri equid VSOLD401
+onu add 31 profile ONU_1P sn VSOL00B63689
+onu 31 desc 10014_1014
+onu 31 tcont 1 name INTERNET dba INTERNET
+onu 31 gemport 1 tcont 1 gemport_name INTERNET
+onu 31 gemport 1 traffic-limit upstream default downstream default
+onu 31 service INTERNET gemport 1 vlan 100
+onu 31 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 31 service-port 1 description INTERNET
+onu 31 portvlan veip 1 mode transparent
+onu 31 pri equid VSOLD401
+onu 31 pri username admin_control enable admin stdONUi0i user_control disable 
+onu add 32 profile ONU_1P sn HWTCBB25C3EC
+onu 32 tcont 1 name INTERNET dba INTERNET
+onu 32 gemport 1 tcont 1 gemport_name INTERNET
+onu 32 gemport 1 traffic-limit upstream default downstream default
+onu 32 service INTERNET gemport 1 vlan 100
+onu 32 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 32 service-port 1 description INTERNET
+onu 32 portvlan veip 1 mode transparent
+onu add 33 profile ONU_1P sn VSOL00FD74E9
+onu 33 desc 10056_1056
+onu 33 tcont 1 name INTERNET dba INTERNET
+onu 33 gemport 1 tcont 1 gemport_name INTERNET
+onu 33 gemport 1 traffic-limit upstream default downstream default
+onu 33 service INTERNET gemport 1 vlan 100
+onu 33 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 33 service-port 1 description INTERNET
+onu 33 portvlan veip 1 mode transparent
+onu 33 pri equid VSOLD401
+onu add 34 profile ONU_1P sn VSOL00B63691
+onu 34 desc 10019_1019
+onu 34 tcont 1 name INTERNET dba INTERNET
+onu 34 gemport 1 tcont 1 gemport_name INTERNET
+onu 34 gemport 1 traffic-limit upstream default downstream default
+onu 34 service INTERNET gemport 1 vlan 100
+onu 34 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 34 service-port 1 description INTERNET
+onu 34 portvlan veip 1 mode transparent
+onu 34 pri equid VSOLD401
+onu add 35 profile ONU_1P sn VSOL00B636B9
+onu 35 desc 10023_1023
+onu 35 tcont 1 name INTERNET dba INTERNET
+onu 35 gemport 1 tcont 1 gemport_name INTERNET
+onu 35 gemport 1 traffic-limit upstream default downstream default
+onu 35 service INTERNET gemport 1 vlan 100
+onu 35 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 35 service-port 1 description INTERNET
+onu 35 portvlan veip 1 mode transparent
+onu 35 pri equid VSOLD401
+onu add 36 profile ONU_1P sn VSOL00B63541
+onu 36 desc 10009_1009
+onu 36 tcont 1 name INTERNET dba INTERNET
+onu 36 gemport 1 tcont 1 gemport_name INTERNET
+onu 36 gemport 1 traffic-limit upstream default downstream default
+onu 36 service INTERNET gemport 1 vlan 100
+onu 36 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 36 service-port 1 description INTERNET
+onu 36 portvlan veip 1 mode transparent
+onu 36 pri equid VSOLD401
+onu add 37 profile ONU_1P sn VSOL00FDA1B1
+onu 37 desc 10016_1016
+onu 37 tcont 1 name INTERNET dba INTERNET
+onu 37 gemport 1 tcont 1 gemport_name INTERNET
+onu 37 gemport 1 traffic-limit upstream default downstream default
+onu 37 service INTERNET gemport 1 vlan 100
+onu 37 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 37 service-port 1 description INTERNET
+onu 37 portvlan veip 1 mode transparent
+onu 37 pri equid VSOLD401
+onu add 38 profile ONU_1P sn VSOL0006B295
+onu 38 desc 10075_1075
+onu 38 tcont 1 name INTERNET dba INTERNET
+onu 38 gemport 1 tcont 1 gemport_name INTERNET
+onu 38 gemport 1 traffic-limit upstream default downstream default
+onu 38 service INTERNET gemport 1 vlan 100
+onu 38 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 38 service-port 1 description INTERNET
+onu 38 portvlan veip 1 mode transparent
+onu 38 pri equid VSOLD401
+onu add 39 profile ONU_1P sn VSOL00B6367D
+onu 39 desc 10031_1031
+onu 39 tcont 1 name INTERNET dba INTERNET
+onu 39 gemport 1 tcont 1 gemport_name INTERNET
+onu 39 gemport 1 traffic-limit upstream default downstream default
+onu 39 service INTERNET gemport 1 vlan 100
+onu 39 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 39 service-port 1 description INTERNET
+onu 39 portvlan veip 1 mode transparent
+onu 39 pri equid VSOLD401
+onu add 40 profile ONU_1P sn VSOL00B63611
+onu 40 desc 10070_1070
+onu 40 tcont 1 name INTERNET dba INTERNET
+onu 40 gemport 1 tcont 1 gemport_name INTERNET
+onu 40 gemport 1 traffic-limit upstream default downstream default
+onu 40 service INTERNET gemport 1 vlan 100
+onu 40 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 40 service-port 1 description INTERNET
+onu 40 portvlan veip 1 mode transparent
+onu 40 pri equid VSOLD401
+onu add 41 profile ONU_1P sn VSOL00B63685
+onu 41 desc 10012_1012
+onu 41 tcont 1 name INTERNET dba INTERNET
+onu 41 gemport 1 tcont 1 gemport_name INTERNET
+onu 41 gemport 1 traffic-limit upstream default downstream default
+onu 41 service INTERNET gemport 1 vlan 100
+onu 41 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 41 service-port 1 description INTERNET
+onu 41 portvlan veip 1 mode transparent
+onu 41 pri equid VSOLD401
+onu add 42 profile ONU_1P sn VSOL0009C54D
+onu 42 desc 10030_1030
+onu 42 tcont 1 name INTERNET dba INTERNET
+onu 42 gemport 1 tcont 1 gemport_name INTERNET
+onu 42 gemport 1 traffic-limit upstream default downstream default
+onu 42 service INTERNET gemport 1 vlan 100
+onu 42 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 42 service-port 1 description INTERNET
+onu 42 portvlan veip 1 mode transparent
+onu 42 pri equid VSOLD401
+onu add 43 profile Hw_4p sn HWTCD1974B9A
+onu 43 tcont 1 name INTERNET dba INTERNET
+onu 43 gemport 1 tcont 1 gemport_name INTERNET
+onu 43 gemport 1 traffic-limit upstream default downstream default
+onu 43 service INTERNET gemport 1 vlan 100
+onu 43 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 43 service-port 1 description INTERNET
+onu 43 portvlan veip 1 mode transparent
+onu add 44 profile ONU_1P sn HWTCD630D79C
+onu 44 desc 10153_1153
+onu 44 tcont 1 name INTERNET dba INTERNET
+onu 44 gemport 1 tcont 1 gemport_name INTERNET
+onu 44 gemport 1 traffic-limit upstream default downstream default
+onu 44 service INTERNET gemport 1 vlan 100
+onu 44 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 44 service-port 1 description INTERNET
+onu 44 portvlan veip 1 mode transparent
+onu add 45 profile ONU_1P sn HWTCB72F62A3
+onu 45 desc 10055_1055
+onu 45 tcont 1 name INTERNET dba INTERNET
+onu 45 gemport 1 tcont 1 gemport_name INTERNET
+onu 45 gemport 1 traffic-limit upstream default downstream default
+onu 45 service INTERNET gemport 1 vlan 100
+onu 45 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 45 service-port 1 description INTERNET
+onu 45 portvlan veip 1 mode transparent
+onu add 46 profile Hw_4p sn HWTC082CACA1
+onu 46 desc 10163_1163
+onu 46 tcont 1 name INTERNET dba INTERNET
+onu 46 gemport 1 tcont 1 gemport_name INTERNET
+onu 46 gemport 1 traffic-limit upstream default downstream default
+onu 46 service INTERNET gemport 1 vlan 100
+onu 46 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 46 service-port 1 description INTERNET
+onu 46 portvlan veip 1 mode transparent
+onu add 47 profile Hw_4p sn HWTC39514EA1
+onu 47 desc 10166_1166
+onu 47 tcont 1 name INTERNET dba INTERNET
+onu 47 gemport 1 tcont 1 gemport_name INTERNET
+onu 47 gemport 1 traffic-limit upstream default downstream default
+onu 47 service INTERNET gemport 1 vlan 100
+onu 47 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 47 service-port 1 description INTERNET
+onu 47 portvlan veip 1 mode transparent
+onu add 48 profile ONU_1P sn HWTCE8DF197C
+onu 48 desc 10172_1172
+onu 48 tcont 1 name INTERNET dba INTERNET
+onu 48 gemport 1 tcont 1 gemport_name INTERNET
+onu 48 gemport 1 traffic-limit upstream default downstream default
+onu 48 service INTERNET gemport 1 vlan 100
+onu 48 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 48 service-port 1 description INTERNET
+onu 48 portvlan veip 1 mode transparent
+onu add 49 profile ONU_1P sn HWTCEEC3C47C
+onu 49 desc 10174_1174
+onu 49 tcont 1 name INTERNET dba INTERNET
+onu 49 gemport 1 tcont 1 gemport_name INTERNET
+onu 49 gemport 1 traffic-limit upstream default downstream default
+onu 49 service INTERNET gemport 1 vlan 100
+onu 49 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 49 service-port 1 description INTERNET
+onu 49 portvlan veip 1 mode transparent
+exit
+!
+interface gpon0/3
+no onu auto-learn
+onu add 1 profile ONU_1P sn VSOL00FDF669
+onu 1 desc 10083_1083
+onu 1 tcont 1 name INTERNET dba INTERNET
+onu 1 gemport 1 tcont 1 gemport_name INTERNET
+onu 1 gemport 1 traffic-limit upstream default downstream default
+onu 1 service INTERNET gemport 1 vlan 100
+onu 1 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 1 service-port 1 description INTERNET
+onu 1 portvlan veip 1 mode transparent
+onu 1 pri equid VSOLD401
+onu 1 pri wan_conn add route 
+onu 1 pri wan_conn index 1 route internet nat enable pppoe proxy disable user 10083 pwd 1083 mode auto server PPPOE_SERVER1
+onu 1 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 1 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu 1 pri acl http control enable lan enable wan enable ipv4_control disable ipv6_control disable port 80
+onu add 2 profile ONU_1P sn VSOL00067A35
+onu 2 desc 10084_1084
+onu 2 tcont 1 name INTERNET dba INTERNET
+onu 2 gemport 1 tcont 1 gemport_name INTERNET
+onu 2 gemport 1 traffic-limit upstream default downstream default
+onu 2 service INTERNET gemport 1 vlan 100
+onu 2 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 2 service-port 1 description INTERNET
+onu 2 portvlan veip 1 mode transparent
+onu 2 pri equid VSOLD401
+onu 2 pri wan_conn add route 
+onu 2 pri wan_conn index 1 route internet nat enable pppoe proxy disable user 10084 pwd 1084 mode auto server PPPOE_SERVER1
+onu 2 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 2 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 3 profile Hw_4p sn HWTC5AD72F9A
+onu 3 desc 10086_1086
+onu 3 tcont 1 name INTERNET dba INTERNET
+onu 3 gemport 1 tcont 1 gemport_name INTERNET
+onu 3 gemport 1 traffic-limit upstream default downstream default
+onu 3 service INTERNET gemport 1 vlan 100
+onu 3 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 3 service-port 1 description INTERNET
+onu 3 portvlan veip 1 mode transparent
+onu add 4 profile Hw_4p sn HWTC4F4CAC9C
+onu 4 desc 10087_1087
+onu 4 tcont 1 name INTERNET dba INTERNET
+onu 4 gemport 1 tcont 1 gemport_name INTERNET
+onu 4 gemport 1 traffic-limit upstream default downstream default
+onu 4 service INTERNET gemport 1 vlan 100
+onu 4 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 4 service-port 1 description INTERNET
+onu 4 portvlan veip 1 mode transparent
+onu add 5 profile Hw_4p sn HWTCF180D39C
+onu 5 desc 10088_1088
+onu 5 tcont 1 name INTERNET dba INTERNET
+onu 5 gemport 1 tcont 1 gemport_name INTERNET
+onu 5 gemport 1 traffic-limit upstream default downstream default
+onu 5 service INTERNET gemport 1 vlan 100
+onu 5 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 5 service-port 1 description INTERNET
+onu 5 portvlan veip 1 mode transparent
+onu add 6 profile ONU_1P sn HWTC15255996
+onu 6 desc 10089_1089
+onu 6 tcont 1 name INTERNET dba INTERNET
+onu 6 gemport 1 tcont 1 gemport_name INTERNET
+onu 6 gemport 1 traffic-limit upstream default downstream default
+onu 6 service INTERNET gemport 1 vlan 100
+onu 6 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 6 service-port 1 description INTERNET
+onu 6 portvlan veip 1 mode transparent
+onu add 7 profile ONU_1P sn HWTC0CA5F49C
+onu 7 desc 10090_1090
+onu 7 tcont 1 name INTERNET dba INTERNET
+onu 7 gemport 1 tcont 1 gemport_name INTERNET
+onu 7 gemport 1 traffic-limit upstream default downstream default
+onu 7 service INTERNET gemport 1 vlan 100
+onu 7 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 7 service-port 1 description INTERNET
+onu 7 portvlan veip 1 mode transparent
+onu add 8 profile ONU_1P sn HWTCFA49D89B
+onu 8 desc 10091_1091
+onu 8 tcont 1 name INTERNET dba INTERNET
+onu 8 gemport 1 tcont 1 gemport_name INTERNET
+onu 8 gemport 1 traffic-limit upstream default downstream default
+onu 8 service INTERNET gemport 1 vlan 100
+onu 8 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 8 service-port 1 description INTERNET
+onu 8 portvlan veip 1 mode transparent
+onu add 9 profile Hw_4p sn HWTCBB862DBC
+onu 9 desc 10092_1092
+onu 9 tcont 1 name INTERNET dba INTERNET
+onu 9 gemport 1 tcont 1 gemport_name INTERNET
+onu 9 gemport 1 traffic-limit upstream default downstream default
+onu 9 service INTERNET gemport 1 vlan 100
+onu 9 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 9 service-port 1 description INTERNET
+onu 9 portvlan veip 1 mode transparent
+onu add 10 profile ONU_1P sn VSOL0006B9AD
+onu 10 desc 10100_1100
+onu 10 tcont 1 name INTERNET dba INTERNET
+onu 10 gemport 1 tcont 1 gemport_name INTERNET
+onu 10 gemport 1 traffic-limit upstream default downstream default
+onu 10 service INTERNET gemport 1 vlan 100
+onu 10 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 10 service-port 1 description INTERNET
+onu 10 portvlan veip 1 mode transparent
+onu 10 pri equid VSOLD401
+onu 10 pri wan_conn add route 
+onu 10 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10100 pwd 1100 mode auto server PPPOE_SERVER1
+onu 10 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 10 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 11 profile ONU_1P sn HWTCBB2BC57C
+onu 11 desc 10103_1103
+onu 11 tcont 1 name INTERNET dba INTERNET
+onu 11 gemport 1 tcont 1 gemport_name INTERNET
+onu 11 gemport 1 traffic-limit upstream default downstream default
+onu 11 service INTERNET gemport 1 vlan 100
+onu 11 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 11 service-port 1 description INTERNET
+onu 11 portvlan veip 1 mode transparent
+onu add 12 profile ONU_1P sn VSOL00066E15
+onu 12 desc 10105_1105
+onu 12 tcont 1 name INTERNET dba INTERNET
+onu 12 gemport 1 tcont 1 gemport_name INTERNET
+onu 12 gemport 1 traffic-limit upstream default downstream default
+onu 12 service INTERNET gemport 1 vlan 100
+onu 12 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 12 service-port 1 description INTERNET
+onu 12 portvlan veip 1 mode transparent
+onu 12 pri equid VSOLD401
+onu 12 pri wan_conn add route 
+onu 12 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10105 pwd 1105 mode auto server PPPOE_SERVER1
+onu 12 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 12 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 13 profile Hw_4p sn HWTC212B6E9C
+onu 13 desc 10107_1107
+onu 13 tcont 1 name INTERNET dba INTERNET
+onu 13 gemport 1 tcont 1 gemport_name INTERNET
+onu 13 gemport 1 traffic-limit upstream default downstream default
+onu 13 service INTERNET gemport 1 vlan 100
+onu 13 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 13 service-port 1 description INTERNET
+onu 13 portvlan veip 1 mode transparent
+onu add 14 profile Hw_4p sn HWTCD1F59A9B
+onu 14 desc 10115_1115
+onu 14 tcont 1 name INTERNET dba INTERNET
+onu 14 gemport 1 tcont 1 gemport_name INTERNET
+onu 14 gemport 1 traffic-limit upstream default downstream default
+onu 14 service INTERNET gemport 1 vlan 100
+onu 14 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 14 service-port 1 description INTERNET
+onu 14 portvlan veip 1 mode transparent
+onu add 15 profile ONU_1P sn HWTC24B81E9A
+onu 15 tcont 1 name INTERNET dba INTERNET
+onu 15 gemport 1 tcont 1 gemport_name INTERNET
+onu 15 gemport 1 traffic-limit upstream default downstream default
+onu 15 service INTERNET gemport 1 vlan 100
+onu 15 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 15 service-port 1 description INTERNET
+onu 15 portvlan veip 1 mode transparent
+onu add 16 profile Hw_4p sn HWTC6A7AFD93
+onu 16 desc 10120_1120
+onu 16 tcont 1 name INTERNET dba INTERNET
+onu 16 gemport 1 tcont 1 gemport_name INTERNET
+onu 16 gemport 1 traffic-limit upstream default downstream default
+onu 16 service INTERNET gemport 1 vlan 100
+onu 16 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 16 service-port 1 description INTERNET
+onu 16 portvlan veip 1 mode transparent
+onu add 17 profile Hw_4p sn HWTC1411BE9A
+onu 17 tcont 1 name INTERNET dba INTERNET
+onu 17 gemport 1 tcont 1 gemport_name INTERNET
+onu 17 gemport 1 traffic-limit upstream default downstream default
+onu 17 service INTERNET gemport 1 vlan 100
+onu 17 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 17 service-port 1 description INTERNET
+onu 17 portvlan veip 1 mode transparent
+onu add 18 profile ONU_1P sn HWTC7255059A
+onu 18 desc 10122_1122
+onu 18 tcont 1 name INTERNET dba INTERNET
+onu 18 gemport 1 tcont 1 gemport_name INTERNET
+onu 18 gemport 1 traffic-limit upstream default downstream default
+onu 18 service INTERNET gemport 1 vlan 100
+onu 18 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 18 service-port 1 description INTERNET
+onu 18 portvlan veip 1 mode transparent
+onu add 19 profile ONU_1P sn HWTCB8FC897C
+onu 19 desc 10123_1123
+onu 19 tcont 1 name INTERNET dba INTERNET
+onu 19 gemport 1 tcont 1 gemport_name INTERNET
+onu 19 gemport 1 traffic-limit upstream default downstream default
+onu 19 service INTERNET gemport 1 vlan 100
+onu 19 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 19 service-port 1 description INTERNET
+onu 19 portvlan veip 1 mode transparent
+onu add 20 profile ONU_1P sn VSOL0009D99D
+onu 20 desc 10136_1136
+onu 20 tcont 1 name INTERNET dba INTERNET
+onu 20 gemport 1 tcont 1 gemport_name INTERNET
+onu 20 gemport 1 traffic-limit upstream default downstream default
+onu 20 service INTERNET gemport 1 vlan 100
+onu 20 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 20 service-port 1 description INTERNET
+onu 20 portvlan veip 1 mode transparent
+onu 20 pri equid VSOLD401
+onu 20 pri wan_conn add route 
+onu 20 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10136 pwd 1136 mode auto server PPPOE_SERVER1
+onu 20 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 20 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 21 profile ONU_1P sn VSOL0009C11D
+onu 21 desc 10137_1137
+onu 21 tcont 1 name INTERNET dba INTERNET
+onu 21 gemport 1 tcont 1 gemport_name INTERNET
+onu 21 gemport 1 traffic-limit upstream default downstream default
+onu 21 service INTERNET gemport 1 vlan 100
+onu 21 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 21 service-port 1 description INTERNET
+onu 21 portvlan veip 1 mode transparent
+onu 21 pri equid VSOLD401
+onu 21 pri wan_conn add route 
+onu 21 pri wan_conn index 1 route internet bind_lan 1 nat enable pppoe proxy disable user 10137 pwd 1137 mode auto server PPPOE_SERVER1
+onu 21 pri wan_conn index 1 vlan enable vid 100 pri 0
+onu 21 pri dhcp_server 192.168.1.1 255.255.255.0 enable 3600 192.168.1.10 192.168.1.15 pc 8.8.8.8 1.1.1.1 192.168.1.1 
+onu add 22 profile ONU_1P sn HWTCBBFCC97C
+onu 22 desc 10144_1144
+onu 22 tcont 1 name INTERNET dba INTERNET
+onu 22 gemport 1 tcont 1 gemport_name INTERNET
+onu 22 gemport 1 traffic-limit upstream default downstream default
+onu 22 service INTERNET gemport 1 vlan 100
+onu 22 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 22 service-port 1 description INTERNET
+onu 22 portvlan veip 1 mode transparent
+onu add 23 profile ONU_1P sn HWTC5B5A48A6
+onu 23 desc 10156_1156
+onu 23 tcont 1 name INTERNET dba INTERNET
+onu 23 gemport 1 tcont 1 gemport_name INTERNET
+onu 23 gemport 1 traffic-limit upstream default downstream default
+onu 23 service INTERNET gemport 1 vlan 100
+onu 23 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 23 service-port 1 description INTERNET
+onu 23 portvlan veip 1 mode transparent
+onu add 24 profile ONU_1P sn HWTCD6BA669C
+onu 24 desc 10160_1160
+onu 24 tcont 1 name INTERNET dba INTERNET
+onu 24 gemport 1 tcont 1 gemport_name INTERNET
+onu 24 gemport 1 traffic-limit upstream default downstream default
+onu 24 service INTERNET gemport 1 vlan 100
+onu 24 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 24 service-port 1 description INTERNET
+onu 24 portvlan veip 1 mode transparent
+onu add 26 profile ONU_1P sn HWTC1D1D45A1
+onu 26 desc 10161_1161
+onu 26 tcont 1 name INTERNET dba INTERNET
+onu 26 gemport 1 tcont 1 gemport_name INTERNET
+onu 26 gemport 1 traffic-limit upstream default downstream default
+onu 26 service INTERNET gemport 1 vlan 100
+onu 26 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 26 service-port 1 description INTERNET
+onu 26 portvlan veip 1 mode transparent
+exit
+!
+interface gpon0/4
+no onu auto-learn
+onu add 1 profile Hw_4p sn HWTCBB526C0C
+onu 1 desc 10096_1096
+onu 1 tcont 1 name INTERNET dba INTERNET
+onu 1 gemport 1 tcont 1 gemport_name INTERNET
+onu 1 gemport 1 traffic-limit upstream default downstream default
+onu 1 service INTERNET gemport 1 vlan 100
+onu 1 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 1 service-port 1 description INTERNET
+onu 1 portvlan veip 1 mode transparent
+onu add 2 profile ONU_1P sn HWTCBBEF4BCC
+onu 2 desc 10099_1099
+onu 2 tcont 1 name INTERNET dba INTERNET
+onu 2 gemport 1 tcont 1 gemport_name INTERNET
+onu 2 gemport 1 traffic-limit upstream default downstream default
+onu 2 service INTERNET gemport 1 vlan 100
+onu 2 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 2 service-port 1 description INTERNET
+onu 2 portvlan veip 1 mode transparent
+onu add 3 profile ONU_1P sn HWTC7F070A97
+onu 3 desc 10108_1108
+onu 3 tcont 1 name INTERNET dba INTERNET
+onu 3 gemport 1 tcont 1 gemport_name INTERNET
+onu 3 gemport 1 traffic-limit upstream default downstream default
+onu 3 service INTERNET gemport 1 vlan 100
+onu 3 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 3 service-port 1 description INTERNET
+onu 3 portvlan veip 1 mode transparent
+onu add 4 profile Hw_4p sn HWTC5AD8B89A
+onu 4 desc 10109_1109
+onu 4 tcont 1 name INTERNET dba INTERNET
+onu 4 gemport 1 tcont 1 gemport_name INTERNET
+onu 4 gemport 1 traffic-limit upstream default downstream default
+onu 4 service INTERNET gemport 1 vlan 100
+onu 4 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 4 service-port 1 description INTERNET
+onu 4 portvlan veip 1 mode transparent
+onu add 5 profile default sn HWTCC5BF2895
+onu 5 tcont 1 name INTERNET dba INTERNET
+onu 5 gemport 1 tcont 1 gemport_name INTERNET
+onu 5 gemport 1 traffic-limit upstream default downstream default
+onu 5 service INTERNET gemport 1 vlan 100
+onu 5 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 5 service-port 1 description INTERNET
+onu 5 portvlan veip 1 mode transparent
+onu add 6 profile ONU_1P sn HWTC15725C9A
+onu 6 desc 10126_1126
+onu 6 tcont 1 name INTERNET dba INTERNET
+onu 6 gemport 1 tcont 1 gemport_name INTERNET
+onu 6 gemport 1 traffic-limit upstream default downstream default
+onu 6 service INTERNET gemport 1 vlan 100
+onu 6 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 6 service-port 1 description INTERNET
+onu 6 portvlan veip 1 mode transparent
+onu add 7 profile Hw_4p sn HWTC95B8697C
+onu 7 desc 10129_1129
+onu 7 tcont 1 name INTERNET dba INTERNET
+onu 7 gemport 1 tcont 1 gemport_name INTERNET
+onu 7 gemport 1 traffic-limit upstream default downstream default
+onu 7 service INTERNET gemport 1 vlan 100
+onu 7 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 7 service-port 1 description INTERNET
+onu 7 portvlan veip 1 mode transparent
+onu add 8 profile Hw_4p sn HWTC858BB47C
+onu 8 desc 10130_1130
+onu 8 tcont 1 name INTERNET dba INTERNET
+onu 8 gemport 1 tcont 1 gemport_name INTERNET
+onu 8 gemport 1 traffic-limit upstream default downstream default
+onu 8 service INTERNET gemport 1 vlan 100
+onu 8 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 8 service-port 1 description INTERNET
+onu 8 portvlan veip 1 mode transparent
+onu add 9 profile ONU_1P sn HWTC4155DA7C
+onu 9 desc 10131_1131
+onu 9 tcont 1 name INTERNET dba INTERNET
+onu 9 gemport 1 tcont 1 gemport_name INTERNET
+onu 9 gemport 1 traffic-limit upstream default downstream default
+onu 9 service INTERNET gemport 1 vlan 100
+onu 9 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 9 service-port 1 description INTERNET
+onu 9 portvlan veip 1 mode transparent
+onu add 10 profile Hw_4p sn HWTC17F5039C
+onu 10 desc 10134_1134
+onu 10 tcont 1 name INTERNET dba INTERNET
+onu 10 gemport 1 tcont 1 gemport_name INTERNET
+onu 10 gemport 1 traffic-limit upstream default downstream default
+onu 10 service INTERNET gemport 1 vlan 100
+onu 10 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 10 service-port 1 description INTERNET
+onu 10 portvlan veip 1 mode transparent
+onu add 11 profile Hw_4p sn HWTCA0C73896
+onu 11 desc 10135_1135
+onu 11 tcont 1 name INTERNET dba INTERNET
+onu 11 gemport 1 tcont 1 gemport_name INTERNET
+onu 11 gemport 1 traffic-limit upstream default downstream default
+onu 11 service INTERNET gemport 1 vlan 100
+onu 11 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 11 service-port 1 description INTERNET
+onu 11 portvlan veip 1 mode transparent
+onu add 12 profile ONU_1P sn HWTCE5A7A995
+onu 12 desc 10139_1139
+onu 12 tcont 1 name INTERNET dba INTERNET
+onu 12 gemport 1 tcont 1 gemport_name INTERNET
+onu 12 gemport 1 traffic-limit upstream default downstream default
+onu 12 service INTERNET gemport 1 vlan 100
+onu 12 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 12 service-port 1 description INTERNET
+onu 12 portvlan veip 1 mode transparent
+onu add 13 profile ONU_1P sn HWTCBB53717C
+onu 13 desc 10140_1140
+onu 13 tcont 1 name INTERNET dba INTERNET
+onu 13 gemport 1 tcont 1 gemport_name INTERNET
+onu 13 gemport 1 traffic-limit upstream default downstream default
+onu 13 service INTERNET gemport 1 vlan 100
+onu 13 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 13 service-port 1 description INTERNET
+onu 13 portvlan veip 1 mode transparent
+onu add 14 profile ONU_1P sn HWTCBB8DA40C
+onu 14 desc 10067_1067
+onu 14 tcont 1 name INTERNET dba INTERNET
+onu 14 gemport 1 tcont 1 gemport_name INTERNET
+onu 14 gemport 1 traffic-limit upstream default downstream default
+onu 14 service INTERNET gemport 1 vlan 100
+onu 14 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 14 service-port 1 description INTERNET
+onu 14 portvlan veip 1 mode transparent
+onu add 15 profile ONU_1P sn HWTC465A429B
+onu 15 desc 10146_1146
+onu 15 tcont 1 name INTERNET dba INTERNET
+onu 15 gemport 1 tcont 1 gemport_name INTERNET
+onu 15 gemport 1 traffic-limit upstream default downstream default
+onu 15 service INTERNET gemport 1 vlan 100
+onu 15 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 15 service-port 1 description INTERNET
+onu 15 portvlan veip 1 mode transparent
+onu add 16 profile ONU_1P sn HWTCC12EAB9C
+onu 16 desc 10148_1148
+onu 16 tcont 1 name INTERNET dba INTERNET
+onu 16 gemport 1 tcont 1 gemport_name INTERNET
+onu 16 gemport 1 traffic-limit upstream default downstream default
+onu 16 service INTERNET gemport 1 vlan 100
+onu 16 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 16 service-port 1 description INTERNET
+onu 16 portvlan veip 1 mode transparent
+onu add 17 profile ONU_1P sn HWTC5B6927A6
+onu 17 desc 10150_1150
+onu 17 tcont 1 name INTERNET dba INTERNET
+onu 17 gemport 1 tcont 1 gemport_name INTERNET
+onu 17 gemport 1 traffic-limit upstream default downstream default
+onu 17 service INTERNET gemport 1 vlan 100
+onu 17 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 17 service-port 1 description INTERNET
+onu 17 portvlan veip 1 mode transparent
+onu add 18 profile Hw_4p sn HWTCD983BEA6
+onu 18 desc 10151_1151
+onu 18 tcont 1 name INTERNET dba INTERNET
+onu 18 gemport 1 tcont 1 gemport_name INTERNET
+onu 18 gemport 1 traffic-limit upstream default downstream default
+onu 18 service INTERNET gemport 1 vlan 100
+onu 18 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 18 service-port 1 description INTERNET
+onu 18 portvlan veip 1 mode transparent
+onu add 19 profile ONU_1P sn HWTC5B4DACA6
+onu 19 tcont 1 name INTERNET dba INTERNET
+onu 19 gemport 1 tcont 1 gemport_name INTERNET
+onu 19 gemport 1 traffic-limit upstream default downstream default
+onu 19 service INTERNET gemport 1 vlan 100
+onu 19 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 19 service-port 1 description INTERNET
+onu 19 portvlan veip 1 mode transparent
+onu add 20 profile ONU_1P sn HWTCDB8AD1A6
+onu 20 desc 10154_1154
+onu 20 tcont 1 name INTERNET dba INTERNET
+onu 20 gemport 1 tcont 1 gemport_name INTERNET
+onu 20 gemport 1 traffic-limit upstream default downstream default
+onu 20 service ser_1 gemport 1 vlan 100
+onu 20 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 20 service-port 1 description INTERNET
+onu 20 portvlan veip 1 mode transparent
+onu add 21 profile ONU_1P sn HWTC2FEEA3A1
+onu 21 desc 10159_1159
+onu 21 tcont 1 name INTERNET dba INTERNET
+onu 21 gemport 1 tcont 1 gemport_name INTERNET
+onu 21 gemport 1 traffic-limit upstream default downstream default
+onu 21 service INTERNET gemport 1 vlan 100
+onu 21 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 21 service-port 1 description INTERNET
+onu 21 portvlan veip 1 mode transparent
+onu add 22 profile ONU_1P sn HWTC356415A1
+onu 22 desc 10167_1167
+onu 22 tcont 1 name INTERNET dba INTERNET
+onu 22 gemport 1 tcont 1 gemport_name INTERNET
+onu 22 gemport 1 traffic-limit upstream default downstream default
+onu 22 service INTERNET gemport 1 vlan 100
+onu 22 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 22 service-port 1 description INTERNET
+onu 22 portvlan veip 1 mode transparent
+onu add 23 profile ONU_1P sn HWTC69AEFA7C
+onu 23 desc 10170_1170
+onu 23 tcont 1 name INTERNET dba INTERNET
+onu 23 gemport 1 tcont 1 gemport_name INTERNET
+onu 23 gemport 1 traffic-limit upstream default downstream default
+onu 23 service INTERNET gemport 1 vlan 100
+onu 23 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 23 service-port 1 description INTERNET
+onu 23 portvlan veip 1 mode transparent
+onu add 24 profile ONU_1P sn HWTC9D265F7C
+onu 24 desc 10171_1171
+onu 24 tcont 1 name INTERNET dba INTERNET
+onu 24 gemport 1 tcont 1 gemport_name INTERNET
+onu 24 gemport 1 traffic-limit upstream default downstream default
+onu 24 service INTERNET gemport 1 vlan 100
+onu 24 service-port 1 gemport 1 uservlan 100 vlan 100
+onu 24 service-port 1 description INTERNET
+onu 24 portvlan veip 1 mode transparent
+exit
+!
+!
+
+!onu video slot port configuration
+
+!
+debug mode 
+exit
+!
+!
+
+!
+!
+login-access-list deny snmp 0.0.0.0 0.0.0.0
+login-access-list ipv6 deny snmp ::/0
+login-access-list deny telnet 0.0.0.0 0.0.0.0
+login-access-list ipv6 deny telnet ::/0
+login-access-list enable 
+!
+queue-scheduler strict-priority
+!<RSTP Config Information>
+!
+dhcp-server leasetime 864000
+dhcp-server startip 192.168.0.20 endip 192.168.0.254
+dhcp-server interface vlan 1
+!
+!<dhcp relay config information>
+!<tacplus config information>
+!
+!<radius config information>
+!
+!<dhcp6 server config information>
+duid duid-llt
+!<dhcp6 relay config information>
+!
+!
+!
+!
+crypto key generate rsa usage-keys modulus 2048
+snmp-server start
+snmp-server community public ro 
+snmp-server community private rw 
+snmp-server notify notify inform inform  inform 
+snmp-server notify notify trap trap  trap 
+!
+!
+fan mode open
+
+!!!
+
+!!!
+alarm oamlog critical-event enable
+alarm oamlog dying-gasp enable
+alarm oamlog link-fault enable
+alarm oamlog link-event disable
+alarm oamlog organization-specific enable
+!
+time zone -5
+!
+!um
+user add admin login-password 88877e0967cefad2f5e105263bca0081
+user role admin ADMIN enable-password 88877e0967cefad2f5e105263bca0081
+!<MSTP Config Information>
+spanning-tree mst configuration
+exit
+!
+!
+interface gigabitethernet 0/1
+exit
+!
+interface gigabitethernet 0/2
+exit
+!
+interface gigabitethernet 0/3
+exit
+!
+interface gigabitethernet 0/4
+exit
+!
+interface gigabitethernet 0/5
+exit
+!
+interface gigabitethernet 0/6
+exit
+!
+!
+!
+debug mode 
+debug ospf6 lsa unknown
+!
+exit
+!
+ntp server 216.239.35.0 162.159.200.1
+dst continent america location Guayaquil
